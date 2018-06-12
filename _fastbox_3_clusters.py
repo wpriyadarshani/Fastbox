@@ -296,195 +296,6 @@ class InitialBoundary(object):
 
 
 
-
-
-
-
-
-
-    def reset(self):
-        self.boundary = []
-        self.new_cluster = [[] for i in range(15)]
-
-
-    
-
-    def findOutMajorityPixels(self, non_village_pixels):
-
-        non_village_pixel_count_clusters = []
-        copy = []
-
-        for i in range(len(self.boundary)/2):
-            x = i * 2
-            print self.boundary[x], self.boundary[x+1]
-
-            count = 0
-
-            for j in non_village_pixels:
-                if j[0] > self.boundary[x][0] and j[1] > self.boundary[x][1] and j[2] > self.boundary[x][2] and j[0] < self.boundary[x+1][0] and j[1] < self.boundary[x+1][1] and j[2] < self.boundary[x+1][2]:
-                    count = count+1
-
-            non_village_pixel_count_clusters.append(count)
-            copy.append(count)
-
-
-        for i in non_village_pixel_count_clusters:
-            print "pixel count", i
-
-        #find out the max cluster
-       
-        non_village_pixel_count_clusters.sort()
-        print non_village_pixel_count_clusters[-2], non_village_pixel_count_clusters[-1]
-
-        number_1 = 0
-        number_2 = 0
-        number_3 = 0
-
-        for i in range(len(non_village_pixel_count_clusters)):
-            if non_village_pixel_count_clusters[-1]==copy[i]:
-                number_1 = i
-
-            if non_village_pixel_count_clusters[-2]==copy[i]:
-                number_2 = i
-
-            if non_village_pixel_count_clusters[-3]==copy[i]:
-                number_3 = i
-
-            
-        print number_1, number_2
-        #get relevant cluster
-
-        return self.new_cluster[number_1], self.new_cluster[number_2], self.new_cluster[number_3], number_1, number_2, number_3
-
-    def findMinimumBoundaryOverlapCluster(self, non_village_pixels):
-
-        non_village_pixel_count_clusters = []
-        copy = []
-
-        for i in range(len(self.boundary)/2):
-            x = i * 2
-            print self.boundary[x], self.boundary[x+1]
-
-            count = 0
-
-            for j in non_village_pixels:
-                if j[0] > self.boundary[x][0] and j[1] > self.boundary[x][1] and j[2] > self.boundary[x][2] and j[0] < self.boundary[x+1][0] and j[1] < self.boundary[x+1][1] and j[2] < self.boundary[x+1][2]:
-                    count = count+1
-
-            non_village_pixel_count_clusters.append(count)
-            copy.append(count)
-
-
-        for i in non_village_pixel_count_clusters:
-            print "pixel count", i
-
-        #find out the max cluster
-       
-        non_village_pixel_count_clusters.sort()
-        print non_village_pixel_count_clusters[-2], non_village_pixel_count_clusters[-1]
-
-        number_1 = 0
-        number_2 = 0
-        number_3 = 0
-        number_4 = 0
-        
-
-        for i in range(len(non_village_pixel_count_clusters)):
-            if non_village_pixel_count_clusters[0]==copy[i]:
-                number_1 = i
-            elif non_village_pixel_count_clusters[1]==copy[i]:
-                number_2 = i
-            elif non_village_pixel_count_clusters[2]==copy[i]:
-                number_3 = i
-            elif non_village_pixel_count_clusters[3]==copy[i]:
-                number_3 = i
-
-         
-            
-        print number_1, 
-        #get relevant cluster
-
-        return number_1, number_2, number_3, number_4
-
-
-    def output(self, selected_cluster_no):
-
-        # print "output start -------------########################################"
-
-        village = 0
-        non_village = 0
-
-        
-
-        for j in range(self.image_width):
-            for k in range(self.image_height):
-                not_village_pixel = True
-                for i in range(len(self.boundary)/2):
-                    x = 0
-                    x = i * 2
-
-                    status = False
-                    for no in selected_cluster_no:
-                        # print "no ", no, x, len(self.boundary)
-                        if x != no and (x+1) != no:
-                            # print "************************* ", x
-                            status = True
-
-
-                    if status:
-                        # print x, x+1, len(self.boundary), len(self.boundary)/2
-                        if (self.output_map[j,k][0] > self.boundary[x][0] and self.output_map[j,k][0] < self.boundary[x+1][0]) and (self.output_map[j,k][1] > self.boundary[x][1] and self.output_map[j,k][1] < self.boundary[x+1][1]) and (self.output_map[j,k][2] > self.boundary[x][2] and self.output_map[j,k][2] < self.boundary[x+1][2]):  
-                                # print self.boundary[x], self.boundary[x+1], self.output_map[j,k]
-
-                            self.output_map[j,k] = (255, 0, 0)
-                            village=village+1
-                            not_village_pixel = False
-                            break
-
-                if not_village_pixel:
-                    non_village = non_village+1
-
-     
-
-       
-        self.output_image.show()
-
-    def minimumOverlapOutpu(self, selected_cluster_no):
-
-        # print "output start -------------########################################"
-
-        village = 0
-        non_village = 0
-
-        
-
-        for j in range(self.image_width):
-            for k in range(self.image_height):
-                not_village_pixel = True
-
-                for i in selected_cluster_no:
-                    x = i * 2
-
-                        # print x, x+1, len(self.boundary), len(self.boundary)/2
-                    if (self.output_map[j,k][0] > self.boundary[x][0] and self.output_map[j,k][0] < self.boundary[x+1][0]) and (self.output_map[j,k][1] > self.boundary[x][1] and self.output_map[j,k][1] < self.boundary[x+1][1]) and (self.output_map[j,k][2] > self.boundary[x][2] and self.output_map[j,k][2] < self.boundary[x+1][2]):  
-                                    # print self.boundary[x], self.boundary[x+1], self.output_map[j,k]
-
-                        self.output_map[j,k] = (255, 0, 0)
-                        village=village+1
-                        not_village_pixel = False
-                        break
-
-                if not_village_pixel:
-                    non_village = non_village+1
-
-       
-        self.output_image.show()
-
-            
-
-
-
-
 if __name__ == "__main__":
 
     #training
@@ -497,31 +308,25 @@ if __name__ == "__main__":
 
 
     #find initial boundary of the initial clusters
-    initial = InitialBoundary("T7.png", centroids)
+    initial = InitialBoundary("T4.png", centroids)
     initial.run()
     boundary = initial.findBoundary(clusters , non_village_pixels)
 
     threshold = 50
 
-    maj_pix = []
-    updated_boundary = []
+    optimal_boundary = []
 
     for i in range(len(boundary)):
         #get the majority pixel count in the boundary
         majority_pixel_count = initial.getMajorityPixelsCount(boundary[i], non_village_pixels)
         
-        print majority_pixel_count
-        maj_pix.append(majority_pixel_count)
-
+      
         #check if it is in the threshold
 
         if majority_pixel_count<threshold:
-            print "less ", i
-            updated_boundary.append(boundary[i])
+            optimal_boundary.append(boundary[i])
         else:
-            #run FCM for particular cluster
-            
-
+            #run FCM for particular cluster, if its majority pixel count is greater than the threshold
             if len(clusters[i]) > 5:
                 f = FCM.FCM(clusters[i])
                 centroids = f.run()
@@ -532,15 +337,11 @@ if __name__ == "__main__":
 
                 for j in range(len(updated_boundary_fcm)):
                     update_majority_pixel_count = initial.getMajorityPixelsCount(updated_boundary_fcm[j], non_village_pixels)
-
-                    maj_pix.append(update_majority_pixel_count)
-
                     
                     if update_majority_pixel_count<threshold:
-                        updated_boundary.append(updated_boundary_fcm[j])
+                        optimal_boundary.append(updated_boundary_fcm[j])
                     else:
                         if len(clusters_updated[i]) > 5:
-                            print "starting FCM for ", i
                             f2 = FCM.FCM(clusters_updated[i])
                             centroids = f2.run()
                             clusters_updated_2 = f2.devidPixelsToClusters()
@@ -551,19 +352,16 @@ if __name__ == "__main__":
                             for x in range(len(updated_boundary_fcm_2)):
                                 update_majority_pixel_count_2 = initial.getMajorityPixelsCount(updated_boundary_fcm_2[x], non_village_pixels)
 
-                                maj_pix.append(update_majority_pixel_count_2)
-
-                                print majority_pixel_count
                                 if update_majority_pixel_count_2<threshold:
-                                    updated_boundary.append(updated_boundary_fcm_2[x])
+                                    optimal_boundary.append(updated_boundary_fcm_2[x])
 
 
-    for i in updated_boundary:
-       print "updated_boundary", i
+    for i in optimal_boundary:
+       print "optimal_boundary", i
 
     # for i in maj_pix:
     #     print i
 
-    initial.output_boundary_based(updated_boundary)
+    initial.output_boundary_based(optimal_boundary)
 
  

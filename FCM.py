@@ -60,9 +60,7 @@ class FCM(object):
         iterations = 0
 
         while self.shouldExitFCM(iterations) is False:
-            print "Iteration -------------->", iterations
-            print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-           
+            print "FCM Iteration -------------->", iterations  
             self.calculate_centre_vector()
             self.update_membership()
             iterations += 1
