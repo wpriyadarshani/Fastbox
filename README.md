@@ -1,5 +1,5 @@
 # Fastbox
-modified fast box approach
+modified fast box approach for handling imbalanced data in Remote Sensing Images
 
 
 Reference:
